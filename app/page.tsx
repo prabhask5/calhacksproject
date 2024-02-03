@@ -1,113 +1,117 @@
-import Image from "next/image";
+"use client"
+
+import Script from "next/script";
+import { useEffect, useState } from "react";
+import 'flowbite';
+import { Toast } from "flowbite-react";
+import { HiCheck } from "react-icons/hi";
 
 export default function Home() {
+
+  const [name, setName] = useState("");
+  const [university, setUniversity] = useState("");
+  const [major, setMajor] = useState("");
+  const [gradDate, setGradDate] = useState("");
+  const [gender, setGender] = useState("");
+  const [country, setCountry] = useState("");
+  const [resume, setResume] = useState<File | null>(null);
+  const [essay, setEssay] = useState("");
+  const [is18, setIs18] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  const toastClassState = !showToast ? " opacity-0 ease-in-out": " opacity-1 ease-in-out";
+
+  useEffect(() => {
+    if (showToast) setTimeout(() => setShowToast(false), 3000);
+  }, [showToast])
+
+  const handleSubmit = () => {
+    const formData = {
+      name,
+      university,
+      major,
+      gradDate,
+      gender,
+      country,
+      essay,
+      is18,
+    }
+    console.log(formData);
+
+    setShowToast(true);
+
+    setName("");
+    setUniversity("");
+    setMajor("");
+    setGradDate("");
+    setGender("");
+    setCountry("");
+    setEssay("");
+    setIs18(false);
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+  <>
+    <form onSubmit={e => {
+      e.preventDefault();
+      handleSubmit();
+    }} className="max-w-sm mx-auto my-6">
+      <div className="mb-5">
+        <label htmlFor="fullname" className="block mb-2 text-sm font-medium text-gray-900">Full name</label>
+        <input type="text" id="fullname" value={name} onChange={e => setName(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+      </div>
+      <div className="mb-5">
+        <label htmlFor="university" className="block mb-2 text-sm font-medium text-gray-900">University</label>
+        <input type="text" id="university" value={university} onChange={e => setUniversity(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
+      </div>
+      <div className="mb-5">
+        <label htmlFor="major" className="block mb-2 text-sm font-medium text-gray-900">Major</label>
+        <input type="text" id="major" value={major} onChange={e => setMajor(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
+      </div>
+      <div className="mb-5">
+        <label htmlFor="gradDate" className="block mb-2 text-sm font-medium text-gray-900">Graduation date</label>
+        <input type="text" id="gradDate" value={gradDate} onChange={e => setGradDate(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
+      </div>
+      <div className="mb-5">
+        <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900">Gender</label>
+        <select id="gender" value={gender} onChange={e => setGender(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+          <option value="" disabled>Select gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="nonbinary">Nonbinary</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div className="mb-5">
+        <label htmlFor="country" className="block mb-2 text-sm font-medium text-gray-900">Country of residence</label>
+        <input type="text" id="country" value={country} onChange={e => setCountry(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
+      </div>
+      <div className="mb-5">
+        <label className="block mb-2 text-sm font-medium text-gray-900" htmlFor="resume">Upload resume</label>
+        <input accept="application/pdf" onChange={e => setResume(e.target.files ? e.target.files[0]: null)} className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" id="resume" type="file"/>
+        {resume && <div className="mt-1 cursor-pointer text-sm hover:underline text-gray-500" onClick={() => window.open(URL.createObjectURL(resume), "_blank")}>Click to preview file</div>}
+      </div>
+      <div className="mb-5">
+        <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900">Why are you interested in attending Cal Hacks 11.0? What are you interested in
+building? (1000 character maximum):</label>
+        <textarea value={essay} onChange={e => setEssay(e.target.value)}  id="message" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"></textarea>
+      </div>
+      <div className="flex items-start mb-5">
+        <div className="flex items-center h-5">
+          <input checked={is18} onChange={e => setIs18(!is18)} id="old" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"/>
         </div>
+        <label htmlFor="old" className="ms-2 text-sm font-medium text-gray-900">Are you 18+?</label>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
+    </form>
+    <Toast className={"fixed bottom-5 right-5" + toastClassState}>
+      <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
+        <HiCheck className="h-5 w-5" />
       </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <div className="ml-3 text-sm font-normal">Form successfully submitted.</div>
+      <Toast.Toggle onDismiss={() => setShowToast(false)}/>
+    </Toast>
+    <Script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></Script>
+  </>
   );
 }
