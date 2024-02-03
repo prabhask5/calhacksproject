@@ -104,12 +104,15 @@ export default function Home() {
   const toastClassState = !showToast ? " opacity-0 ease-in-out cursor-default": " opacity-1 ease-in-out";
   const toastDismissClassState = !showToast ? "cursor-default": "cursor-pointer";
   const toastIconClassState = toastState == "success" ? " bg-green-100 text-green-500": " bg-red-100 text-red-500";
+
   const textInputBaseState = "border text-sm rounded-lg block w-full p-2.5";
   const validInputAddOnState = " focus:ring-blue-500 focus:border-blue-500 border-gray-300 text-gray-900 bg-gray-50";
   const invalidInputAddOnState = " bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500";
+
   const fileInputBaseState = "block w-full text-sm border rounded-lg cursor-pointer focus:outline-none";
   const validFileInputAddOnState = " text-gray-900 bg-gray-50";
   const invalidFileInputAddOnState = " bg-red-50 text-red-900";
+  
   const labelBaseState = "block mb-2 text-sm font-medium";
   const validLabelAddOnState = " text-gray-900";
   const invalidLabelAddOnState = " text-red-700";
@@ -162,23 +165,23 @@ export default function Home() {
     }} className="max-w-sm mx-auto my-6">
       <div className="mb-5">
         <label htmlFor="fullname" className={labelBaseState + (fullNameFieldError ? invalidLabelAddOnState: validLabelAddOnState)}>Full name</label>
-        <input type="text" id="fullname" value={name} onChange={e => setName(e.target.value)} onBlur={() => validateAll()} className={textInputBaseState + (fullNameFieldError ? invalidInputAddOnState: validInputAddOnState)} />
+        <input type="text" id="fullname" value={name} onChange={e => setName(e.target.value)} onBlur={() => validateFullName()} className={textInputBaseState + (fullNameFieldError ? invalidInputAddOnState: validInputAddOnState)} />
       </div>
       <div className="mb-5">
         <label htmlFor="university" className={labelBaseState + (universityFieldError ? invalidLabelAddOnState: validLabelAddOnState)}>University</label>
-        <input type="text" id="university" value={university} onChange={e => setUniversity(e.target.value)} onBlur={() => validateAll()} className={textInputBaseState + (universityFieldError ? invalidInputAddOnState: validInputAddOnState)}/>
+        <input type="text" id="university" value={university} onChange={e => setUniversity(e.target.value)} onBlur={() => validateUniversity()} className={textInputBaseState + (universityFieldError ? invalidInputAddOnState: validInputAddOnState)}/>
       </div>
       <div className="mb-5">
         <label htmlFor="major" className={labelBaseState + (majorFieldError ? invalidLabelAddOnState: validLabelAddOnState)}>Major</label>
-        <input type="text" id="major" value={major} onChange={e => setMajor(e.target.value)} onBlur={() => validateAll()} className={textInputBaseState + (majorFieldError ? invalidInputAddOnState: validInputAddOnState)}/>
+        <input type="text" id="major" value={major} onChange={e => setMajor(e.target.value)} onBlur={() => validateMajor()} className={textInputBaseState + (majorFieldError ? invalidInputAddOnState: validInputAddOnState)}/>
       </div>
       <div className="mb-5">
         <label htmlFor="gradDate" className={labelBaseState + (gradDateFieldError ? invalidLabelAddOnState: validLabelAddOnState)}>Graduation date</label>
-        <input type="text" id="gradDate" value={gradDate} onChange={e => setGradDate(e.target.value)} onBlur={() => validateAll()} className={textInputBaseState + (gradDateFieldError ? invalidInputAddOnState: validInputAddOnState)}/>
+        <input type="text" id="gradDate" value={gradDate} onChange={e => setGradDate(e.target.value)} onBlur={() => validateGradDate()} className={textInputBaseState + (gradDateFieldError ? invalidInputAddOnState: validInputAddOnState)}/>
       </div>
       <div className="mb-5">
         <label htmlFor="gender" className={labelBaseState + (genderFieldError ? invalidLabelAddOnState: validLabelAddOnState)}>Gender</label>
-        <select id="gender" value={gender} onChange={e => setGender(e.target.value)} onBlur={() => validateAll()} className={textInputBaseState + (genderFieldError ? invalidInputAddOnState: validInputAddOnState)}>
+        <select id="gender" value={gender} onChange={e => setGender(e.target.value)} onBlur={() => validateGender()} className={textInputBaseState + (genderFieldError ? invalidInputAddOnState: validInputAddOnState)}>
           <option value="" disabled>Select gender</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
@@ -188,17 +191,17 @@ export default function Home() {
       </div>
       <div className="mb-5">
         <label htmlFor="country" className={labelBaseState + (countryFieldError ? invalidLabelAddOnState: validLabelAddOnState)}>Country of residence</label>
-        <input type="text" id="country" value={country} onChange={e => setCountry(e.target.value)} onBlur={() => validateAll()} className={textInputBaseState + (countryFieldError ? invalidInputAddOnState: validInputAddOnState)}/>
+        <input type="text" id="country" value={country} onChange={e => setCountry(e.target.value)} onBlur={() => validateCountry()} className={textInputBaseState + (countryFieldError ? invalidInputAddOnState: validInputAddOnState)}/>
       </div>
       <div className="mb-5">
         <label className={labelBaseState + (resumeFieldError ? invalidLabelAddOnState: validLabelAddOnState)} htmlFor="resume">Upload resume</label>
-        <input accept="application/pdf" onChange={e => setResume(e.target.files ? e.target.files[0]: null)} onBlur={() => validateAll()} className={fileInputBaseState + (resumeFieldError ? invalidFileInputAddOnState: validFileInputAddOnState)} id="resume" type="file"/>
+        <input accept="application/pdf" onChange={e => setResume(e.target.files ? e.target.files[0]: null)} onBlur={() => validateResume()} className={fileInputBaseState + (resumeFieldError ? invalidFileInputAddOnState: validFileInputAddOnState)} id="resume" type="file"/>
         {resume && <div className="mt-1 cursor-pointer text-sm hover:underline text-gray-500" onClick={() => window.open(URL.createObjectURL(resume), "_blank")}>Click to preview file</div>}
       </div>
       <div className="mb-5">
         <label htmlFor="essay" className={labelBaseState + (essayFieldError ? invalidLabelAddOnState: validLabelAddOnState)}>Why are you interested in attending Cal Hacks 11.0? What are you interested in
 building? (1000 character maximum):</label>
-        <textarea value={essay} onChange={e => setEssay(e.target.value)} onBlur={() => validateAll()} id="essay" rows={4} className={textInputBaseState + (essayFieldError ? invalidInputAddOnState: validInputAddOnState)}></textarea>
+        <textarea value={essay} onChange={e => setEssay(e.target.value)} onBlur={() => validateEssay()} id="essay" rows={4} className={textInputBaseState + (essayFieldError ? invalidInputAddOnState: validInputAddOnState)}></textarea>
       </div>
       <div className="flex items-start mb-5">
         <div className="flex items-center h-5">
