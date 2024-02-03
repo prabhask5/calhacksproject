@@ -19,7 +19,8 @@ export default function Home() {
   const [is18, setIs18] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  const toastClassState = !showToast ? " opacity-0 ease-in-out": " opacity-1 ease-in-out";
+  const toastClassState = !showToast ? " opacity-0 ease-in-out cursor-default": " opacity-1 ease-in-out";
+  const toastDismissClassState = !showToast ? "cursor-default": "cursor-pointer";
 
   useEffect(() => {
     if (showToast) setTimeout(() => setShowToast(false), 3000);
@@ -33,6 +34,7 @@ export default function Home() {
       gradDate,
       gender,
       country,
+      resume,
       essay,
       is18,
     }
@@ -46,6 +48,8 @@ export default function Home() {
     setGradDate("");
     setGender("");
     setCountry("");
+    setResume(null);
+    (document.getElementById("resume") as HTMLInputElement).value = "";
     setEssay("");
     setIs18(false);
   };
@@ -109,7 +113,7 @@ building? (1000 character maximum):</label>
         <HiCheck className="h-5 w-5" />
       </div>
       <div className="ml-3 text-sm font-normal">Form successfully submitted.</div>
-      <Toast.Toggle onDismiss={() => setShowToast(false)}/>
+      <Toast.Toggle className={toastDismissClassState} onDismiss={() => setShowToast(false)}/>
     </Toast>
     <Script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></Script>
   </>
